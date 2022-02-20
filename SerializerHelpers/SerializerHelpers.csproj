@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Company>Kiryuumaru</Company>
+    <Authors>Kiryuumaru</Authors>
+    <Description>Provides common serialization implementations.</Description>
+    <Copyright>Kiryuumaru</Copyright>
+    <PackageProjectUrl>https://github.com/Kiryuumaru/SerializerHelpers</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Kiryuumaru/SerializerHelpers</RepositoryUrl>
+    <PackageTags>Serializer, Helper</PackageTags>
+    <PackageLicenseFile>LICENCE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>* Initial release</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+</Project>
