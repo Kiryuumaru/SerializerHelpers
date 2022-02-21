@@ -6,7 +6,7 @@ Provides helpers for serializer and deserializer of data.
 
 |Name|Info|
 | ------------------- | :------------------: |
-|ObservableHelpers|[![NuGet](https://buildstats.info/nuget/SerializerHelpers?includePreReleases=true)](https://www.nuget.org/packages/SerializerHelpers/)|
+|SerializerHelpers|[![NuGet](https://buildstats.info/nuget/SerializerHelpers?includePreReleases=true)](https://www.nuget.org/packages/SerializerHelpers/)|
 
 ## Installation
 ```csharp
