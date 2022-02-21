@@ -17,8 +17,8 @@
     <RepositoryUrl>https://github.com/Kiryuumaru/SerializerHelpers</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>* Minor fixes</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <PackageReleaseNotes>* Fixed blob serializer bugs</PackageReleaseNotes>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

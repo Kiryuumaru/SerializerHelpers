@@ -187,7 +187,7 @@ public static class StringSerializer
     /// </returns>
     public static string?[]? Deserialize(string? data)
     {
-        if (data == null || string.IsNullOrEmpty(data)) return null;
+        if (data == null) return null;
         if (data.Equals(NullIdentifier)) return null;
         if (data.Equals(EmptyIdentifier)) return Array.Empty<string>();
         if (data.Length < 4) return new string[] { "" };

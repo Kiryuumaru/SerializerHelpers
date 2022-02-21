@@ -24,7 +24,7 @@ public static class BlobSerializer
     /// <returns>
     /// The value of the provided <paramref name="key"/> from the provided <paramref name="blobArray"/> parameters.
     /// </returns>
-    public static string? GetValue(string?[] blobArray, string key, string? defaultValue = "")
+    public static string? GetValue(string?[]? blobArray, string key, string? defaultValue = "")
     {
         if (blobArray == null) return defaultValue;
         else if (blobArray.Length <= 1) return defaultValue;
@@ -51,12 +51,7 @@ public static class BlobSerializer
     /// </returns>
     public static string? GetValue(string blob, string key, string? defaultValue = "")
     {
-        var blobArray = StringSerializer.Deserialize(blob);
-        if (blobArray == null)
-        {
-            return null;
-        }
-        return GetValue(blobArray, key, defaultValue);
+        return GetValue(StringSerializer.Deserialize(blob), key, defaultValue);
     }
 
     /// <summary>
@@ -74,7 +69,7 @@ public static class BlobSerializer
     /// <returns>
     /// The resulting blob.
     /// </returns>
-    public static string?[] SetValue(string?[] blobArray, string key, string? value)
+    public static string?[] SetValue(string?[]? blobArray, string key, string? value)
     {
         if (blobArray == null) blobArray = Array.Empty<string>();
         else if (blobArray.Length <= 1) blobArray = Array.Empty<string>();
@@ -111,12 +106,7 @@ public static class BlobSerializer
     /// </returns>
     public static string SetValue(string blob, string key, string? value)
     {
-        var blobArray = StringSerializer.Deserialize(blob);
-        if (blobArray == null)
-        {
-            return blob;
-        }
-        return StringSerializer.Serialize(SetValue(blobArray, key, value));
+        return StringSerializer.Serialize(SetValue(StringSerializer.Deserialize(blob), key, value));
     }
 
     /// <summary>
@@ -131,11 +121,11 @@ public static class BlobSerializer
     /// <returns>
     /// The resulting blob.
     /// </returns>
-    public static string?[] DeleteValue(string?[] blobArray, string key)
+    public static string?[] DeleteValue(string?[]? blobArray, string key)
     {
         if (blobArray == null)
         {
-            return new string?[0];
+            return Array.Empty<string>();
         }
         else if (blobArray.Length <= 1) return blobArray;
         else if (blobArray.Length % 2 != 0) return blobArray;
@@ -164,12 +154,7 @@ public static class BlobSerializer
     /// </returns>
     public static string DeleteValue(string blob, string key)
     {
-        var blobArray = StringSerializer.Deserialize(blob);
-        if (blobArray == null)
-        {
-            return blob;
-        }
-        return StringSerializer.Serialize(DeleteValue(blobArray, key));
+        return StringSerializer.Serialize(DeleteValue(StringSerializer.Deserialize(blob), key));
     }
 
     /// <summary>
