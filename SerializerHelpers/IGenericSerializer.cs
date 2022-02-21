@@ -18,6 +18,9 @@ public interface IGenericSerializer
     /// <summary>
     /// Serializes object to its corresponding value.
     /// </summary>
+    /// <param name="type">
+    /// The type of the data to serialize.
+    /// </param>
     /// <param name="value">
     /// The value to serialize.
     /// </param>
@@ -27,11 +30,14 @@ public interface IGenericSerializer
     /// <returns>
     /// The serialized value.
     /// </returns>
-    string? Serialize(object? value, string? defaultValue = default);
+    string? Serialize(Type type, object? value, string? defaultValue = default);
 
     /// <summary>
     /// Deserialize <see cref="string"/> to its corresponding object.
     /// </summary>
+    /// <param name="type">
+    /// The type of the data to deserialize.
+    /// </param>
     /// <param name="data">
     /// The serialized data to deserialize.
     /// </param>
@@ -41,5 +47,5 @@ public interface IGenericSerializer
     /// <returns>
     /// The deserialized value.
     /// </returns>
-    object? Deserialize(string? data, object? defaultValue = default);
+    object? Deserialize(Type type, string? data, object? defaultValue = default);
 }

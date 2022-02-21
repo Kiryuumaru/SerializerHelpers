@@ -185,7 +185,7 @@ public static class BlobSerializer
     /// <returns>
     /// The converted dictionary from the provided <paramref name="blob"/> parameter.
     /// </returns>
-    public static Dictionary<string, string?> Convert(string blob)
+    public static Dictionary<string, string?> Convert(string? blob)
     {
         Dictionary<string, string?> dictionary = new();
         var blobArray = StringSerializer.Deserialize(blob);

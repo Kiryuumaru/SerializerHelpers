@@ -7,22 +7,24 @@ using System.Text;
 namespace SerializerHelpers.Types.Generics;
 
 /// <inheritdoc/>
-public class ListSerializer : IGenericSerializer
+public class DictionarySerializer : IGenericSerializer
 {
     /// <inheritdoc/>
-    public Type GenericTypeDefinition => typeof(List<>);
+    public Type GenericTypeDefinition => typeof(Dictionary<,>);
 
     /// <inheritdoc/>
     public object? Deserialize(Type type, string? data, object? defaultValue = null)
     {
         Type[] genericTypes = type.GetGenericArguments();
-        if (genericTypes.Length != 1)
+        if (genericTypes.Length != 2)
         {
             return defaultValue;
         }
 
-        Type itemType = genericTypes[0];
-        SerializerProxy itemSerializer = Serializer.GetSerializer(itemType);
+        Type keyType = genericTypes[0];
+        Type valueType = genericTypes[1];
+        var keyValuePairType = typeof(KeyValuePair<,>).MakeGenericType(keyType, valueType);
+        SerializerProxy itemSerializer = Serializer.GetSerializer(keyValuePairType);
 
         string?[]? encoded;
         try
@@ -38,7 +40,7 @@ public class ListSerializer : IGenericSerializer
             return defaultValue;
         }
         var decoded = Activator.CreateInstance(type);
-        MethodInfo addMethod = type.GetMethod("Add");
+        MethodInfo addMethod = typeof(ICollection<>).MakeGenericType(keyValuePairType).GetMethod("Add", new Type[] { keyValuePairType });
         for (int i = 0; i < encoded.Length; i++)
         {
             addMethod.Invoke(decoded, new object?[] { itemSerializer.Deserialize(encoded[i]) });
@@ -60,13 +62,15 @@ public class ListSerializer : IGenericSerializer
         }
 
         Type[] genericTypes = enumerable.GetType().GetGenericArguments();
-        if (genericTypes.Length != 1)
+        if (genericTypes.Length != 2)
         {
             return defaultValue;
         }
 
-        Type itemType = genericTypes[0];
-        SerializerProxy itemSerializer = Serializer.GetSerializer(itemType);
+        Type keyType = genericTypes[0];
+        Type valueType = genericTypes[1];
+        var keyValuePairType = typeof(KeyValuePair<,>).MakeGenericType(keyType, valueType);
+        SerializerProxy itemSerializer = Serializer.GetSerializer(keyValuePairType);
 
         List<string?> encoded = new();
         foreach (var item in enumerable)
