@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/Kiryuumaru/SerializerHelpers</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>* Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>* Minor fixes</PackageReleaseNotes>
     <Version>1.0.1</Version>
   </PropertyGroup>
 
