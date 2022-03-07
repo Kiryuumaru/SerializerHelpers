@@ -104,7 +104,7 @@ public static class NumberSerializer
         {
             if (arbitraryBaseNumber[i] >= baseSystem)
             {
-                throw new ArgumentOutOfRangeException("Number has greater value than base number system.");
+                throw new ArgumentOutOfRangeException(nameof(arbitraryBaseNumber));
             }
             value += (long)(arbitraryBaseNumber[i] * Math.Pow(baseSystem, arbitraryBaseNumber.Length - i - 1));
         }

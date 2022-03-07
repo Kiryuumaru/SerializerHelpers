@@ -40,7 +40,11 @@ public class DictionarySerializer : IGenericSerializer
             return defaultValue;
         }
         var decoded = Activator.CreateInstance(type);
-        MethodInfo addMethod = typeof(ICollection<>).MakeGenericType(keyValuePairType).GetMethod("Add", new Type[] { keyValuePairType });
+        MethodInfo? addMethod = typeof(ICollection<>).MakeGenericType(keyValuePairType).GetMethod("Add", new Type[] { keyValuePairType });
+        if (addMethod == null)
+        {
+            return defaultValue;
+        }
         for (int i = 0; i < encoded.Length; i++)
         {
             addMethod.Invoke(decoded, new object?[] { itemSerializer.Deserialize(encoded[i]) });

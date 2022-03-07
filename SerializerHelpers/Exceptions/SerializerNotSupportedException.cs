@@ -7,13 +7,19 @@ namespace SerializerHelpers.Exceptions;
 /// </summary>
 public class SerializerNotSupportedException : SerializerException
 {
-    internal SerializerNotSupportedException(Type type)
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerNotSupportedException"/> with provided <paramref name="type"/>.
+    /// </summary>
+    public SerializerNotSupportedException(Type type)
         : base("There is no supported serializer for \'" + type.Name + "\'. Register a serializer for the specified type first.")
     {
 
     }
 
-    internal SerializerNotSupportedException(string fullname)
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerNotSupportedException"/> with provided <paramref name="fullname"/>.
+    /// </summary>
+    public SerializerNotSupportedException(string fullname)
         : base("There is no supported serializer for \'" + fullname + "\'. Register a serializer for the specified type first.")
     {
 

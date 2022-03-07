@@ -5,26 +5,38 @@ namespace SerializerHelpers.Exceptions;
 /// <summary>
 /// Occurs when there`s an error in serialization.
 /// </summary>
-public abstract class SerializerException : Exception
+public class SerializerException : Exception
 {
-    private protected SerializerException()
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerException"/>.
+    /// </summary>
+    public SerializerException()
     {
 
     }
 
-    private protected SerializerException(Exception innerException)
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerException"/> with provided <paramref name="innerException"/>.
+    /// </summary>
+    public SerializerException(Exception innerException)
         : base("An serializer error occured.", innerException)
     {
 
     }
 
-    private protected SerializerException(string message)
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerException"/> with provided <paramref name="message"/>.
+    /// </summary>
+    public SerializerException(string message)
         : base(message)
     {
 
     }
 
-    private protected SerializerException(string message, Exception innerException)
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerException"/> with provided <paramref name="message"/> and <paramref name="innerException"/>.
+    /// </summary>
+    public SerializerException(string message, Exception innerException)
         : base(message, innerException)
     {
 

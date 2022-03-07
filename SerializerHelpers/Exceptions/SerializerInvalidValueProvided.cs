@@ -5,7 +5,10 @@
 /// </summary>
 public class SerializerInvalidValueProvided : SerializerException
 {
-    internal SerializerInvalidValueProvided()
+    /// <summary>
+    /// Creates an instance of <see cref="SerializerInvalidValueProvided"/>.
+    /// </summary>
+    public SerializerInvalidValueProvided()
         : base("The provided value is invalid serialized data.")
     {
 

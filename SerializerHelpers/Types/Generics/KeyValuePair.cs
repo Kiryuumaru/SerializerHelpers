@@ -61,8 +61,13 @@ public class KeyValuePairSerializer : IGenericSerializer
         SerializerProxy keySerializer = Serializer.GetSerializer(keyType);
         SerializerProxy valueSerializer = Serializer.GetSerializer(valueType);
 
-        PropertyInfo keyMethod = type.GetProperty("Key");
-        PropertyInfo valueMethod = type.GetProperty("Value");
+        PropertyInfo? keyMethod = type.GetProperty("Key");
+        PropertyInfo? valueMethod = type.GetProperty("Value");
+
+        if (keyMethod == null || valueMethod == null)
+        {
+            return defaultValue;
+        }
 
         var itemKey = keyMethod.GetValue(value, null);
         var itemValue = valueMethod.GetValue(value, null);

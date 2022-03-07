@@ -38,7 +38,11 @@ public class ListSerializer : IGenericSerializer
             return defaultValue;
         }
         var decoded = Activator.CreateInstance(type);
-        MethodInfo addMethod = type.GetMethod("Add");
+        MethodInfo? addMethod = type.GetMethod("Add");
+        if (addMethod == null)
+        {
+            return defaultValue;
+        }
         for (int i = 0; i < encoded.Length; i++)
         {
             addMethod.Invoke(decoded, new object?[] { itemSerializer.Deserialize(encoded[i]) });

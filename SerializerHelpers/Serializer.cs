@@ -279,13 +279,13 @@ public abstract class Serializer
     internal static SerializerProxy GetSerializerInternal(Type type)
     {
         // From cache
-        if (serializersCache.TryGetValue(type, out SerializerProxy serializerProxy))
+        if (serializersCache.TryGetValue(type, out SerializerProxy? serializerProxy))
         {
             return serializerProxy;
         }
 
         // From register
-        if (serializers.TryGetValue(type, out SerializerHolder serializer))
+        if (serializers.TryGetValue(type, out SerializerHolder? serializer))
         {
             SerializerProxy proxy = new(serializer,
                 (value, defaultValue) => serializer.SerializeObject(type, value, defaultValue),
@@ -317,7 +317,7 @@ public abstract class Serializer
         if (type.IsGenericType)
         {
             var genericTypeDefinition = type.GetGenericTypeDefinition();
-            if (genericSerializers.TryGetValue(genericTypeDefinition, out GenericSerializerHolder genericSerializer))
+            if (genericSerializers.TryGetValue(genericTypeDefinition, out GenericSerializerHolder? genericSerializer))
             {
                 SerializerProxy proxy = new(genericSerializer,
                     (value, defaultValue) => genericSerializer.SerializeObject(type, value, defaultValue),
@@ -333,93 +333,100 @@ public abstract class Serializer
             // From array
             if (type.IsArray)
             {
-                var underlyingType = type.GetElementType();
-                SerializerProxy underlyingSerializer = GetSerializerInternal(underlyingType);
-                SerializerProxy proxy = new(
-                    underlyingSerializer.Serializer,
-                    (value, defaultValue) =>
-                    {
-                        if (value == null)
+                Type? underlyingType = type.GetElementType();
+                if (underlyingType != null)
+                {
+                    SerializerProxy underlyingSerializer = GetSerializerInternal(underlyingType);
+                    SerializerProxy proxy = new(
+                        underlyingSerializer.Serializer,
+                        (value, defaultValue) =>
                         {
-                            return defaultValue;
-                        }
-
-                        if (value is not IEnumerable enumerable)
-                        {
-                            return defaultValue;
-                        }
-                        int rank = type.GetArrayRank();
-                        List<string?> list = new()
-                        {
-                            rank.ToString()
-                        };
-                        MethodInfo getLengthMethod = type.GetMethod("GetLength", new Type[] { typeof(int) });
-                        for (int i = 0; i < rank; i++)
-                        {
-                            list.Add(getLengthMethod.Invoke(value, new object[] { i }).ToString());
-                        }
-                        foreach (var item in enumerable)
-                        {
-                            list.Add(underlyingSerializer.Serialize(item));
-                        }
-
-                        return StringSerializer.Serialize(list.ToArray());
-                    },
-                    (data, defaultValue) =>
-                    {
-                        string?[]? encoded;
-                        try
-                        {
-                            encoded = StringSerializer.Deserialize(data);
-                        }
-                        catch
-                        {
-                            return defaultValue;
-                        }
-                        if (encoded == null || encoded.Length < 2)
-                        {
-                            return defaultValue;
-                        }
-                        if (!int.TryParse(encoded[0], out int rank))
-                        {
-                            return defaultValue;
-                        }
-                        if (encoded.Length < rank + 1)
-                        {
-                            return defaultValue;
-                        }
-                        int[] lengths = new int[rank];
-                        int[] currentIndex = new int[rank];
-                        for (int i = 1; i < rank + 1; i++)
-                        {
-                            if (!int.TryParse(encoded[i], out int length))
+                            if (value == null)
                             {
                                 return defaultValue;
                             }
-                            lengths[i - 1] = length;
-                        }
-                        var decoded = Array.CreateInstance(underlyingType, lengths);
-                        for (int i = 0; i < encoded.Length - rank - 1; i++)
-                        {
-                            var value = underlyingSerializer.Deserialize(encoded[i + rank + 1]);
-                            decoded.SetValue(value, currentIndex);
-                            for (int j = rank - 1; j >= 0; j--)
+
+                            if (value is not IEnumerable enumerable)
                             {
-                                if (currentIndex[j] < lengths[j] - 1)
+                                return defaultValue;
+                            }
+                            int rank = type.GetArrayRank();
+                            List<string?> list = new()
+                            {
+                                rank.ToString()
+                            };
+                            MethodInfo? getLengthMethod = type.GetMethod("GetLength", new Type[] { typeof(int) });
+                            if (getLengthMethod == null)
+                            {
+                                return defaultValue;
+                            }
+                            for (int i = 0; i < rank; i++)
+                            {
+                                list.Add(getLengthMethod.Invoke(value, new object[] { i })?.ToString());
+                            }
+                            foreach (var item in enumerable)
+                            {
+                                list.Add(underlyingSerializer.Serialize(item));
+                            }
+
+                            return StringSerializer.Serialize(list.ToArray());
+                        },
+                        (data, defaultValue) =>
+                        {
+                            string?[]? encoded;
+                            try
+                            {
+                                encoded = StringSerializer.Deserialize(data);
+                            }
+                            catch
+                            {
+                                return defaultValue;
+                            }
+                            if (encoded == null || encoded.Length < 2)
+                            {
+                                return defaultValue;
+                            }
+                            if (!int.TryParse(encoded[0], out int rank))
+                            {
+                                return defaultValue;
+                            }
+                            if (encoded.Length < rank + 1)
+                            {
+                                return defaultValue;
+                            }
+                            int[] lengths = new int[rank];
+                            int[] currentIndex = new int[rank];
+                            for (int i = 1; i < rank + 1; i++)
+                            {
+                                if (!int.TryParse(encoded[i], out int length))
                                 {
-                                    currentIndex[j]++;
-                                    break;
+                                    return defaultValue;
                                 }
-                                else
+                                lengths[i - 1] = length;
+                            }
+                            var decoded = Array.CreateInstance(underlyingType, lengths);
+                            for (int i = 0; i < encoded.Length - rank - 1; i++)
+                            {
+                                var value = underlyingSerializer.Deserialize(encoded[i + rank + 1]);
+                                decoded.SetValue(value, currentIndex);
+                                for (int j = rank - 1; j >= 0; j--)
                                 {
-                                    currentIndex[j] = 0;
+                                    if (currentIndex[j] < lengths[j] - 1)
+                                    {
+                                        currentIndex[j]++;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        currentIndex[j] = 0;
+                                    }
                                 }
                             }
-                        }
-                        return decoded;
-                    });
-                serializersCache.AddOrUpdate(type, proxy, (type, onlValue) => proxy);
-                return proxy;
+                            return decoded;
+                        });
+                    serializersCache.AddOrUpdate(type, proxy, (type, onlValue) => proxy);
+                    return proxy;
+                }
             }
         }
 
