@@ -17,8 +17,8 @@
     <RepositoryUrl>https://github.com/Kiryuumaru/SerializerHelpers</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>* Added upper frameworks to simplify dependencies.</PackageReleaseNotes>
-    <Version>1.0.3</Version>
+    <PackageReleaseNotes>* Updated documentation.</PackageReleaseNotes>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
