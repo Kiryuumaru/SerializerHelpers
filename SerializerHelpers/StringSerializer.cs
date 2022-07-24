@@ -190,7 +190,7 @@ public static class StringSerializer
         if (data == null) return null;
         if (data.Equals(NullIdentifier)) return null;
         if (data.Equals(EmptyIdentifier)) return Array.Empty<string>();
-        if (data.Length < 4) return new string[] { "" };
+        if (data.Length < 4) return Array.Empty<string>();
 
         int indexDigits = (int)ExtractNumber(data[0].ToString());
         int indexCount = (int)ExtractNumber(data.Substring(1, indexDigits));

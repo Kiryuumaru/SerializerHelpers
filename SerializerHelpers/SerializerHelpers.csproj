@@ -17,8 +17,8 @@
     <RepositoryUrl>https://github.com/Kiryuumaru/SerializerHelpers</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>* Updated documentation.</PackageReleaseNotes>
-    <Version>1.0.4</Version>
+    <PackageReleaseNotes>* Fixed dictionary decode exception on empty items.</PackageReleaseNotes>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

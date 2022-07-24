@@ -312,7 +312,10 @@ public class GenericType
         string? serTest1 = Serializer.Serialize(test1);
         Dictionary<string, TimeSpan>? desTest1 = Serializer.Deserialize<Dictionary<string, TimeSpan>>(serTest1);
 
+        Dictionary<string, double>? desTest2 = Serializer.Deserialize<Dictionary<string, double>>("");
+
         Assert.Equal(test1, desTest1);
+        Assert.Empty(desTest2);
     }
 
     [Fact]
