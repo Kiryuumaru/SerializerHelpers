@@ -1,3 +1,5 @@
+This repository is deprecated. Similar features can be found in [System.Text.Json](https://www.nuget.org/packages/System.Text.Json).
+
 # Serializer Helpers
 
 Provides helpers for serializer and deserializer of data.
